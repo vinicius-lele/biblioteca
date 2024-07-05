@@ -7,32 +7,22 @@ use Livro\Widgets\Form\Entry;
 use Livro\Widgets\Container\VBox;
 use Livro\Widgets\Datagrid\Datagrid;
 use Livro\Widgets\Datagrid\DatagridColumn;
-use Livro\Widgets\Dialog\Message;
-use Livro\Widgets\Dialog\Question;
-use Livro\Widgets\Container\Panel;
 use Livro\Widgets\Wrapper\FormWrapper;
 use Livro\Widgets\Wrapper\DatagridWrapper;
 use Livro\Database\Transaction;
 use Livro\Database\Repository;
 use Livro\Database\Criteria;
 
-/**
- * Listagem de Pessoas
- */
 class ListarLivrosPublic extends Page
 {
-    private $form;     // formulário de buscas
-    private $datagrid; // listagem
+    private $form;
+    private $datagrid;
     private $loaded;
 
-    /**
-     * Construtor da página
-     */
     public function __construct()
     {
         parent::__construct();
 
-        // instancia um formulário de buscas
         $this->form = new FormWrapper(new Form('form_busca_livros'));
         $this->form->setTitle('Pesquisa');
 
@@ -43,11 +33,8 @@ class ListarLivrosPublic extends Page
         $this->form->addAction('Buscar', new Action(array($this, 'onReload')));
         $this->form->addAction('Voltar', new Action(array($this, 'onVoltar')));
 
-
-        // instancia objeto Datagrid
         $this->datagrid = new DatagridWrapper(new Datagrid);
 
-        // instancia as colunas da Datagrid
         $codigo   = new DatagridColumn('id',         'Código', 'center', '10%');
         $titulo     = new DatagridColumn('titulo',       'Título',    'left', '30%');
         $autor = new DatagridColumn('autor',   'Autor', 'left', '15%');
@@ -55,7 +42,6 @@ class ListarLivrosPublic extends Page
         $tipo_livro = new DatagridColumn('classificacao',       'Classificação',    'left', '10%');       
         $disponivel   = new DatagridColumn('disponivel', 'Disponível', 'left', '30%');
 
-        // adiciona as colunas à Datagrid
         $this->datagrid->addColumn($codigo);
         $this->datagrid->addColumn($titulo);
         $this->datagrid->addColumn($autor);
@@ -63,7 +49,6 @@ class ListarLivrosPublic extends Page
         $this->datagrid->addColumn($tipo_livro);
         $this->datagrid->addColumn($disponivel);
 
-        // monta a página através de uma caixa
         $box = new VBox;
         $box->style = 'display:block';
         $box->add($this->form);
@@ -72,15 +57,11 @@ class ListarLivrosPublic extends Page
         parent::add($box);
     }
 
-    /**
-     * Carrega a Datagrid com os objetos do banco de dados
-     */
     public function onReload()
     {
-        Transaction::open('livro'); // inicia transação com o BD
+        Transaction::open('livro');
         $repository = new Repository('Livro');
 
-        // cria um critério de seleção de dados
         $criteria = new Criteria;
         $criteria->setProperty('order', 'id');
 
@@ -89,21 +70,16 @@ class ListarLivrosPublic extends Page
             $criteria->setProperty('offset', $_GET['offset']);
         }
 
-        // obtém os dados do formulário de buscas
         $dados = $this->form->getData();
 
-        // verifica se o usuário preencheu o formulário
         if ($dados->titulo) {
-            // filtra pelo nome do pessoa
             $criteria->add('titulo', 'like', "%{$dados->titulo}%");
         }
 
         if ($dados->autor) {
-            // filtra pelo nome do pessoa
             $criteria->add('autor', 'like', "%{$dados->autor}%");
         }
 
-        // carrega os produtos que satisfazem o critério
         $livros = $repository->load($criteria);
         $this->datagrid->clear();
         if ($livros) {
@@ -231,13 +207,10 @@ class ListarLivrosPublic extends Page
                                             $nome_classificacao->nome_classificacao.' - POUCO TEXTO':
                                             $nome_classificacao->nome_classificacao;
                 
-
-                // adiciona o objeto na Datagrid
                 $this->datagrid->addItem($livro);
             }
         }
 
-        // finaliza a transação
         Transaction::close();
         $this->loaded = true;
     }
@@ -247,12 +220,8 @@ class ListarLivrosPublic extends Page
         echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
     }
 
-    /**
-     * Exibe a página
-     */
     public function show()
     {
-        // se a listagem ainda não foi carregada
         if (!$this->loaded) {
             $this->onReload();
         }

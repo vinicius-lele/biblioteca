@@ -1,53 +1,36 @@
 <?php
 
 use Livro\Control\Page;
-use Livro\Control\Action;
-use Livro\Widgets\Form\Form;
-use Livro\Widgets\Form\Entry;
 use Livro\Widgets\Container\VBox;
 use Livro\Widgets\Datagrid\Datagrid;
 use Livro\Widgets\Datagrid\DatagridColumn;
-use Livro\Widgets\Dialog\Message;
-use Livro\Widgets\Dialog\Question;
-use Livro\Widgets\Container\Panel;
-use Livro\Widgets\Wrapper\FormWrapper;
 use Livro\Widgets\Wrapper\DatagridWrapper;
 use Livro\Database\Transaction;
 use Livro\Database\Repository;
 use Livro\Database\Criteria;
 
-/**
- * Listagem de Pessoas
- */
 class ParaConferir extends Page
 {
-    private $datagrid; // listagem
+    private $datagrid;
     private $loaded;
 
-    /**
-     * Construtor da página
-     */
     public function __construct()
     {
         parent::__construct();
-        // instancia objeto Datagrid
         $this->datagrid = new DatagridWrapper(new Datagrid);
 
-        // instancia as colunas da Datagrid
         $codigo   = new DatagridColumn('id',         'Código', 'center', '10%');
         $titulo     = new DatagridColumn('titulo',       'Título',    'left', '30%');
         $cor     = new DatagridColumn('cor',       'Cor',    'center', '5%');
         $autor = new DatagridColumn('autor',   'Autor', 'left', '15%');
         $disponivel   = new DatagridColumn('disponivel', 'Disponível', 'left', '40%');
 
-        // adiciona as colunas à Datagrid
         $this->datagrid->addColumn($codigo);
         $this->datagrid->addColumn($titulo);
         $this->datagrid->addColumn($cor);
         $this->datagrid->addColumn($autor);
         $this->datagrid->addColumn($disponivel);
 
-        // monta a página através de uma caixa
         $box = new VBox;
         $box->style = 'display:block';
         $box->add($this->datagrid);
@@ -55,15 +38,11 @@ class ParaConferir extends Page
         parent::add($box);
     }
 
-    /**
-     * Carrega a Datagrid com os objetos do banco de dados
-     */
     public function onReload()
     {
-        Transaction::open('livro'); // inicia transação com o BD
+        Transaction::open('livro');
         $repository = new Repository('Livro');
 
-        // cria um critério de seleção de dados
         $criteria = new Criteria;
         $criteria->setProperty('order', 'id');
         $criteria->add('disponivel', '=', "0");
@@ -73,7 +52,6 @@ class ParaConferir extends Page
             $criteria->setProperty('offset', $_GET['offset']);
         }
 
-        // carrega os produtos que satisfazem o critério
         $livros = $repository->load($criteria);
         $this->datagrid->clear();
         if ($livros) {
@@ -199,18 +177,15 @@ class ParaConferir extends Page
                     default:
                         $livro->cor = '-';
                 }
-                // adiciona o objeto na Datagrid
                 $this->datagrid->addItem($livro);
             }
         }
 
-        // finaliza a transação
         Transaction::close();
         $this->loaded = true;
     }
     public function show()
     {
-        // se a listagem ainda não foi carregada
         if (!$this->loaded) {
             $this->onReload();
         }

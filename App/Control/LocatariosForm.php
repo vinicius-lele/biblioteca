@@ -5,7 +5,6 @@ use Livro\Widgets\Form\Form;
 use Livro\Widgets\Form\Entry;
 use Livro\Widgets\Form\Combo;
 use Livro\Widgets\Wrapper\FormWrapper;
-
 use Livro\Database\Transaction;
 use Livro\Control\Action;
 use Livro\Widgets\Dialog\Message;
@@ -58,21 +57,16 @@ class LocatariosForm extends Page
         try {
             Transaction::open('livro');
 
-            // Obtém os dados do formulário como um objeto stdClass
             $dados = $this->form->getData();
 
-            // Converte o objeto stdClass para um array
             $dadosArray = json_decode(json_encode($dados), true);
 
-            // Converte os dados para maiúsculas, preservando caracteres especiais
             $dadosMaiusculos = array_map(function ($campo) {
-                return mb_strtoupper($campo, 'UTF-8'); // Converte cada campo para maiúsculas, mantendo caracteres especiais
+                return mb_strtoupper($campo, 'UTF-8');
             }, $dadosArray);
 
-            // Atualiza os dados do formulário com os valores convertidos
             $this->form->setData($dadosMaiusculos);
 
-            // Cria um novo objeto Locatario com os dados já convertidos
             $locatario = new Locatario;
             $locatario->fromArray((array)$dadosMaiusculos);
             $locatario->store();

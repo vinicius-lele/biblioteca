@@ -9,7 +9,6 @@ use Livro\Widgets\Datagrid\Datagrid;
 use Livro\Widgets\Datagrid\DatagridColumn;
 use Livro\Widgets\Dialog\Message;
 use Livro\Widgets\Dialog\Question;
-use Livro\Widgets\Container\Panel;
 use Livro\Widgets\Wrapper\FormWrapper;
 use Livro\Widgets\Wrapper\DatagridWrapper;
 use Livro\Database\Transaction;
@@ -17,18 +16,12 @@ use Livro\Database\Repository;
 use Livro\Database\Criteria;
 use Livro\Session\Session;
 
-/**
- * Listagem de Pessoas
- */
 class SelecionaLocatario extends Page
 {
-    private $form;     // formulário de buscas
-    private $datagrid; // listagem
+    private $form;
+    private $datagrid;
     private $loaded;
 
-    /**
-     * Construtor da página
-     */
     public function __construct()
     {
         parent::__construct();
@@ -39,16 +32,12 @@ class SelecionaLocatario extends Page
         $this->form->addField('Nome', $nome, '100%');
         $this->form->addAction('Buscar', new Action(array($this, 'onLoadLocatario')));
 
-
-        // instancia objeto Datagrid
         $this->datagrid = new DatagridWrapper(new Datagrid);
 
-        // instancia as colunas da Datagrid
         $documento   = new DatagridColumn('documento',         'Documento', 'center', '10%');
         $nome     = new DatagridColumn('nome_locatario',       'Nome',    'left', '30%');
         $tipo = new DatagridColumn('tipo_locatario',   'Tipo', 'left', '60%');
 
-        // adiciona as colunas à Datagrid
         $this->datagrid->addColumn($documento);
         $this->datagrid->addColumn($nome);
         $this->datagrid->addColumn($tipo);
@@ -68,7 +57,6 @@ class SelecionaLocatario extends Page
         Transaction::open('livro');
         $repository = new Repository('Locatario');
 
-        // cria um critério de seleção de dados
         $criteria = new Criteria;
         $criteria->setProperty('order', 'nome_locatario');
         
@@ -77,16 +65,12 @@ class SelecionaLocatario extends Page
             $criteria->setProperty('offset', $_GET['offset']);
         }
 
-        // obtém os dados do formulário de buscas
         $dados = $this->form->getData();
 
-        // verifica se o usuário preencheu o formulário
         if (isset($dados->nome_locatario)) {
-            // filtra pelo nome do pessoa
             $criteria->add('nome_locatario', 'like', "%{$dados->nome_locatario}%");
         }
 
-        // carrega os produtos que satisfazem o critério
         $locatarios = $repository->load($criteria);
         $this->datagrid->clear();
         if ($locatarios) {
@@ -99,21 +83,15 @@ class SelecionaLocatario extends Page
                         $locatario->tipo_locatario = 'SERVIDOR';
                         break;
                 }
-                // adiciona o objeto na Datagrid
                 $this->datagrid->addItem($locatario);
             }
         }
         Transaction::close();
     }
 
-
-    /**
-     * Carrega a Datagrid com os objetos do banco de dados
-     */
     public function onReload()
     {
         Transaction::open('livro');
-
 
         if (isset($_SESSION['id_livro']) && isset($_SESSION['id_locatario'])) {
             $action1 = new Action(array($this, 'Empresta'));
@@ -128,7 +106,6 @@ class SelecionaLocatario extends Page
                             Locatario: ' . $nome_locatario->nome_locatario . '<br>
                             Em: ' . date('d-m-Y'), $action1);
         }
-        // finaliza a transação
         Transaction::close();
     }
 
@@ -167,7 +144,6 @@ class SelecionaLocatario extends Page
 
     public function show()
     {
-        // se a listagem ainda não foi carregada
         if (!$this->loaded) {
             $this->onLoadLocatario();
         }
