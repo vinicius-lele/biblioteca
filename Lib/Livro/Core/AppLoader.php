@@ -3,35 +3,21 @@ namespace Livro\Core;
 
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
-use Exception;
 
-/**
- * Carrega a classe da aplicação
- * @author Pablo Dall'Oglio
- */
 class AppLoader
 {
     protected $directories;
     
-    /**
-     * Adiciona um diretório a ser vasculhado
-     */
     public function addDirectory($directory)
     {
         $this->directories[] = $directory;
     }
     
-    /**
-     * Registra o AppLoader
-     */
     public function register()
     {
         spl_autoload_register(array($this, 'loadClass'));
     }
     
-    /**
-     * Carrega uma classe
-     */
     public function loadClass($class)
     {
         $folders = $this->directories;

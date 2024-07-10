@@ -6,32 +6,20 @@ use Livro\Widgets\Form\Form;
 use Livro\Widgets\Form\Button;
 use Livro\Widgets\Base\Element;
 
-/**
- * Decora formulários no formato Bootstrap
- */
 class FormWrapper
 {
     private $decorated;
     
-    /**
-     * Constrói o decorator
-     */
     public function __construct(Form $form)
     {
         $this->decorated = $form;
     }
     
-    /**
-     * Redireciona chamadas para o objeto decorado
-     */
     public function __call($method, $parameters)
     {
         return call_user_func_array( [$this->decorated, $method], $parameters );
     }
     
-    /**
-     * Exibe o formulário
-     */
     public function show()
     {
         $element = new Element('form');

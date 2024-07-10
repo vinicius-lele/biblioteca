@@ -3,18 +3,11 @@ namespace Livro\Widgets\Container;
 
 use Livro\Widgets\Base\Element;
 
-/**
- * Empacota elementos em painel Bootstrap
- * @author Pablo Dall'Oglio
- */
 class Panel extends Element
 {
     private $body;
     private $footer;
     
-    /**
-     * Constrói o painel
-     */
     public function __construct($panel_title = NULL)
     {
         parent::__construct('div');
@@ -44,17 +37,11 @@ class Panel extends Element
         
     }
     
-    /**
-     * Adiciona conteúdo
-     */
     public function add($content)
     {
         $this->body->add($content);
     }
     
-    /**
-     * Adiciona rodapé
-     */
     public function addFooter($footer)
     {
         $this->footer->add( $footer );

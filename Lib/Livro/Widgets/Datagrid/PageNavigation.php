@@ -3,10 +3,6 @@ namespace Livro\Widgets\Datagrid;
 
 use Livro\Control\Action;
 
-/**
- * Representa a paginação de uma datagrid
- * @author Pablo Dall'Oglio
- */
 class PageNavigation
 {
     private $action;
