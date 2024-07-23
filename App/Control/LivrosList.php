@@ -32,6 +32,7 @@ class LivrosList extends Page
         $this->form->addField('Título', $titulo, '100%');
         $this->form->addAction('Buscar', new Action(array($this, 'onReload')));
         $this->form->addAction('Novo', new Action(array(new LivrosForm, 'onEdit')));
+        $this->form->addAction('Imprimir Lista', new Action(array($this, 'onRedirect')));
 
 
         $this->datagrid = new DatagridWrapper(new Datagrid);
@@ -59,6 +60,10 @@ class LivrosList extends Page
         parent::add($box);
     }
 
+    public function onRedirect()
+    {
+        header("Location: index.php?class=ListarPdf");
+    }
     public function onReload()
     {
         Transaction::open('livro');
