@@ -39,7 +39,7 @@ class ListarPdf extends Page
         $repository = new Repository('Livro');
 
         $criteria = new Criteria;
-        $criteria->setProperty('order', 'titulo');
+        $criteria->setProperty('order', 'titulo');        
 
         $livros = $repository->load($criteria);
         $this->datagrid->clear();
@@ -52,7 +52,7 @@ class ListarPdf extends Page
         Transaction::close();
         $this->loaded = true;
     }
-    
+
     public function show()
     {
         new Message('info', "PARA SALVAR A LISTA EM PDF, BASTA <a href=\"#\" onclick=\"window.print(); return false\">CLICAR AQUI.</a> <br>NA JANELA DE IMPRESSÃO MUDAR A SUA IMPRESSORA PADRÃO PARA: SALVAR EM PDF");
