@@ -40,7 +40,6 @@ class ListarPdf extends Page
 
         $criteria = new Criteria;
         $criteria->setProperty('order', 'titulo');        
-
         $livros = $repository->load($criteria);
         $this->datagrid->clear();
         if ($livros) {

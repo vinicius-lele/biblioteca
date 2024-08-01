@@ -61,7 +61,7 @@ class SelecionaLocatario extends Page
         $criteria->setProperty('order', 'nome_locatario');
         
         if (isset($_GET['offset'])) {
-            $criteria->setProperty('limit', 10);
+            $criteria->setProperty('limit', 100);
             $criteria->setProperty('offset', $_GET['offset']);
         }
 
@@ -138,7 +138,6 @@ class SelecionaLocatario extends Page
     public function onAddLocatario($param)
     {
         Session::setValue('id_locatario',$param['id']);
-        new Message('info', "Locatario selecionado!");
         $this->onReload();
     }
 

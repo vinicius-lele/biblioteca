@@ -66,7 +66,7 @@ class ListarLivrosPublic extends Page
         $criteria->setProperty('order', 'id');
 
         if (isset($_GET['offset'])) {
-            $criteria->setProperty('limit', 15);
+            $criteria->setProperty('limit', 100);
             $criteria->setProperty('offset', $_GET['offset']);
         }
 

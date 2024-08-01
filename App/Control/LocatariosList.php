@@ -65,6 +65,11 @@ class LocatariosList extends Page
         $criteria = new Criteria;
         $criteria->setProperty('order', 'nome_locatario');
 
+        if (isset($_GET['offset'])) {
+            $criteria->setProperty('limit', 100);
+            $criteria->setProperty('offset', $_GET['offset']);
+        }
+
         if(isset($_GET['done']))
             new Message('info', 'Locatário salvo com sucesso!');
         $dados = $this->form->getData();

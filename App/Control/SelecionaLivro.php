@@ -59,7 +59,7 @@ class SelecionaLivro extends Page
             $criteria->add('disponivel','<>',0);
     
             if (isset($_GET['offset'])) {
-                $criteria->setProperty('limit', 10);
+                $criteria->setProperty('limit', 100);
                 $criteria->setProperty('offset', $_GET['offset']);
             }
 
@@ -124,7 +124,7 @@ class SelecionaLivro extends Page
     public function onAddLivro($param)
     {
         Session::setValue('id_livro',$param['id']);
-        new Message('info', "Livro selecionado!");;
+        new Message('info', "Livro selecionado!");
         header("Location: index.php?class=SelecionaLocatario&offset=0");
         die();
     }

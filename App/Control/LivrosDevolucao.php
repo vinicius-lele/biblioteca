@@ -65,7 +65,7 @@ class LivrosDevolucao extends Page
         
         
         if (isset($_GET['offset'])) {
-            $criteria->setProperty('limit', 15);
+            $criteria->setProperty('limit', 100);
             $criteria->setProperty('offset', $_GET['offset']);
         }
 

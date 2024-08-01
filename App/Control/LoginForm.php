@@ -22,8 +22,8 @@ class LoginForm extends Page
         $login      = new Entry('login');
         $password   = new Password('password');
         
-        $login->placeholder    = 'admin';
-        $password->placeholder = 'admin';
+        $login->placeholder    = 'Digite o usuário';
+        $password->placeholder = 'Digite a senha';
         
         $this->form->addField('Login',    $login,    200);
         $this->form->addField('Senha',    $password, 200);
@@ -36,7 +36,7 @@ class LoginForm extends Page
     {
 
         $data = $this->form->getData();
-        if ($data->login == 'admin' AND $data->password == 'admin')
+        if ($data->login == 'gestao' AND $data->password == 'gabaldi15*')
         {
             Session::setValue('logged', TRUE);
             echo "<script language='JavaScript'> window.location = 'index.php'; </script>";

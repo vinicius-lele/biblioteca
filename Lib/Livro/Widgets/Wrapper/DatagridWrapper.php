@@ -41,15 +41,8 @@ class DatagridWrapper
             $paginacao->add(' Paginação: ');   
             
 
-            $proximo = $_GET['offset'] + 15;
-            $anterior = $_GET['offset'] - 15;
-
-            if($_REQUEST['class']=="SelecionaLivro" || $_REQUEST['class']=="SelecionaLocatario")
-            {
-                $proximo = $_GET['offset'] + 10;
-                $anterior = $_GET['offset'] - 10;
-            } 
-
+            $proximo = $_GET['offset'] + 100;
+            $anterior = $_GET['offset'] - 100;
 
             $x = explode('&offset=', $_SERVER['REQUEST_URI']);
 
