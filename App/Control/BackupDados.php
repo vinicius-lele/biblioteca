@@ -1,6 +1,7 @@
 <?php
 use Livro\Control\Page;
 use Livro\Widgets\Dialog\Message;
+use Livro\Adapters\PhpMailerAdapter;
 
 class BackupDados extends Page
 {
@@ -16,6 +17,16 @@ class BackupDados extends Page
 	    $pathToSave = "C:\\Dump_biblioteca\\backup_$date.sql";
 	    $comand = "$pathDump > $pathToSave";
 	    shell_exec($comand);
+        $assuntoEmail = 'BACKUP BANCO DE DADOS GABALDI';
+	    $corpoEmail = 'Segue anexo backup do banco de dados gerado em: '.date('d/m/Y');
+
+	    $mail = new PhpMailerAdapter;
+	    $mail->setFrom('bibliotecagabaldi@outlook.com', 'GERENCIADOR DE BIBLIOTECA NELSON GABALDI');
+	    $mail->addAddress('bibliotecagabaldi@outlook.com', 'Você');
+	    $mail->mountContent($assuntoEmail, $corpoEmail);
+	    $mail->addAttachment($pathToSave);
+        
+        $mail->send();
         new Message('info', 'Backup realizado com sucesso');
     }
 
