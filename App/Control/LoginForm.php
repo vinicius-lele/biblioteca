@@ -1,6 +1,9 @@
 <?php
 use Livro\Control\Page;
 use Livro\Control\Action;
+use Livro\Database\Criteria;
+use Livro\Database\Repository;
+use Livro\Database\Transaction;
 use Livro\Widgets\Form\Form;
 use Livro\Widgets\Form\Entry;
 use Livro\Widgets\Form\Password;
@@ -34,13 +37,22 @@ class LoginForm extends Page
     
     public function onLogin($param)
     {
-
         $data = $this->form->getData();
-        if ($data->login == 'gestao' AND $data->password == 'gabaldi15*')
-        {
-            Session::setValue('logged', TRUE);
-            echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
+
+        Transaction::open('livro');
+        $repository = new Repository('Usuario');
+
+        $criteria = new Criteria;
+        $criteria->setProperty('order', 'id');
+        $usuarios = $repository->load($criteria);
+        foreach($usuarios as $usuario){
+            if ($data->login == $usuario->usuario AND $data->password == $usuario->senha)
+                {
+                    Session::setValue('logged', TRUE);
+                    echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
+                }
         }
+        Transaction::close();   
     }
     
     public function onLogout($param)
