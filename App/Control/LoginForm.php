@@ -46,7 +46,7 @@ class LoginForm extends Page
         $criteria->setProperty('order', 'id');
         $usuarios = $repository->load($criteria);
         foreach($usuarios as $usuario){
-            if ($data->login == $usuario->usuario AND $data->password == $usuario->senha)
+            if ($data->login == $usuario->usuario AND md5($data->password) == $usuario->senha)
                 {
                     Session::setValue('logged', TRUE);
                     echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
