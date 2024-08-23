@@ -12,7 +12,8 @@ class BackupDados extends Page
 
     public function onReload()
     {
-        $pathDump = "C:\\xampp\\mysql\\bin\\mysqldump -u root -proot biblioteca";
+
+        $pathDump = "C:\\xampp\\mysql\\bin\\mysqldump -u ".DB_USER." -p".DB_PASS." biblioteca";
 	    $date = date('Ymd_His');
 	    $pathToSave = "C:\\Dump_biblioteca\\backup_$date.sql";
 	    $comand = "$pathDump > $pathToSave";
@@ -21,8 +22,8 @@ class BackupDados extends Page
 	    $corpoEmail = 'Segue anexo backup do banco de dados gerado em: '.date('d/m/Y');
 
 	    $mail = new PhpMailerAdapter;
-	    $mail->setFrom('bibliotecagabaldi@outlook.com', 'GERENCIADOR DE BIBLIOTECA NELSON GABALDI');
-	    $mail->addAddress('bibliotecagabaldi@outlook.com', 'Você');
+	    $mail->setFrom(MAIL_USERNAME, 'GERENCIADOR DE BIBLIOTECA NELSON GABALDI');
+	    $mail->addAddress(MAIL_DESTINATION, 'Você');
 	    $mail->mountContent($assuntoEmail, $corpoEmail);
 	    $mail->addAttachment($pathToSave);
         

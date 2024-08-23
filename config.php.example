@@ -6,3 +6,6 @@
     const MAIL_USERNAME = 'EMAIL';
     const MAIL_PASSWORD = 'SENHA';
     const MAIL_PORT     = 587;
+    const MAIL_DESTINATION = 'EMAIL DE DESTINO';
+    const DB_USER           = 'usuario do banco de dados';
+    const DB_PASS           = 'senha do banco de dados';

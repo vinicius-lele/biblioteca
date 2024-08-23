@@ -14,8 +14,8 @@ Caso o XAMPP tenha sido instalado de forma padrão, clonar o projeto para a past
 > Quaisquer alterações/inserções que forem necessárias nas tabelas `usuario`, `tipo_locatario`, `tipo_disponivel`, `tipo_classificacao`, devem ser feitas diretamente no banco de dados.
 
 ## BACKUP DO BANCO DE DADOS PARA UM E-MAIL
-Existe a funcionalidade de fazer backup dos dados onde salva-se localmente em `APP\Database\` e também envia para um e-mail pré-configurado. Para o correto funcionamento, siga a etapa abaixo:
-* Alterar o nome do arquivo `config.php.example` para `config.php` e inserir o servidor smtp, email e senha nos campos indicados;
+Existe a funcionalidade de fazer backup dos dados onde salva-se localmente em `C:\Dump_biblioteca` e também envia para um e-mail pré-configurado. Para o correto funcionamento, siga a etapa abaixo:
+* Alterar o nome do arquivo `config.php.example` para `config.php` e inserir o servidor smtp, email e senha nos campos indicados assim como outros dados que constarem lá;
 
 
 # O SISTEMA
